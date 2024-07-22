@@ -1,7 +1,19 @@
-from flask import Flask
+from flask import Flask, make_response
 
 app = Flask(__name__)
 
+message = {"message": "Hello World"}
+
 @app.route("/")
 def home():
-    return {"message": "Hello World"}
+    return message
+
+@app.route("/no_content")
+def no_content():
+    return ({"message": "No content found"}, 204)
+
+@app.route("/exp")
+def index_explicit():
+    resp = make_response(message)
+    resp.status_code = 200
+    return resp
