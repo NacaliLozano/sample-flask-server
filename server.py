@@ -103,4 +103,22 @@ def name_search():
         return ({"message": "Person not found"}, 404)
     else:
         return ({"message": "Invalid input parameter"}, 422)
+
+@app.get("/count")
+def count():
+    return {"data count": len(data)}, 200
+
+@app.get("/person/<uuid:id>")
+def find_by_uuid(id):
+        for person in data:
+            if str(id) == person["id"]:
+                return person, 200
+        return {"message": "Person not found"}, 404
         
+@app.delete("/person/<uuid:id>")
+def delete_by_uuid(id):
+    for person in data:
+        if str(id) == person["id"]:
+            data.remove(person)
+            return {"message": "Data deleted succesfully"}, 200
+    return {"message": "Person not found"}, 404
