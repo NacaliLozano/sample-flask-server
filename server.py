@@ -122,3 +122,19 @@ def delete_by_uuid(id):
             data.remove(person)
             return {"message": "Data deleted succesfully"}, 200
     return {"message": "Person not found"}, 404
+
+@app.route("/person", methods=["POST"])
+def add_by_uuid():
+    new_person = request.get_json()
+    if not new_person:
+        return {"message": "Invalid input parameter"}, 422
+    
+    for person in data:
+        if new_person["id"] == person["id"]:
+            return {"message": "This person already exists"}, 400
+    data.append(new_person)
+    return {"message": "Person created successfully"}, 201
+
+@app.errorhandler(404)
+def api_not_found(error):
+    return {"message": "API not found"}, 404
